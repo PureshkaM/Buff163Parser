@@ -61,7 +61,7 @@ def get_data_buff():
         print("Page" + str(page) + "\n")
         for item in range(offset, offset + size_list, 20):
             response = session.get(
-                url=("https://buff.163.com/api/market/goods?game=csgo&page_num=" + str(page) + "&tab=selling&use_suggestion=0&_=1710077203803"),
+                url=(f"https://buff.163.com/api/market/goods?game=csgo&page_num={str(page)}&tab=selling&use_suggestion=0&_=1710077203803"),
                 timeout=5
             )
 
