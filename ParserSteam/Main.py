@@ -57,28 +57,45 @@ def get_data_buff():
     size_list = 20
     page = 1
     control = 0
+    counter = 0
     while True:
-        print("Page" + str(page) + "\n")
+        print("Page: " + str(page) + "\n")
         for item in range(offset, offset + size_list, 20):
             response = session.get(
                 url=(f"https://buff.163.com/api/market/goods?game=csgo&page_num={str(page)}&tab=selling&use_suggestion=0&_=1710077203803"),
-                timeout=5
+                timeout=10
             )
+
+            if response.status_code != 200:
+                print("Site error! Chilling...\n")
+                time.sleep(random.randint(10, 15))
+                continue
 
             offset += size_list
             page += 1
             resp = response.json()
             data = resp.get('data')
-            items = data.get('items')
-            control = len(items)
-            for i in items:
-                result.append(
-                    {
-                        'name': i.get('market_hash_name'),
-                        'price': i.get('sell_min_price'),
-                        'url': i.get('steam_market_url')
-                    }
-                )
+            if data is None:
+                page -= 1
+                offset -= size_list
+                counter += 1
+                print("Data error! Trying again...")
+                if counter >= 3:
+                    break
+                continue
+            else:
+                counter = 0
+                items = data.get('items')
+                control = len(items)
+                for i in items:
+                    result.append(
+                        {
+                            'name': i.get('market_hash_name'),
+                            'price': i.get('sell_min_price'),
+                            'url': i.get('steam_market_url')
+                        }
+                    )
+
         time.sleep(random.randint(1, 2))
         if control < 20:
             break
