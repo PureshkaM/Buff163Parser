@@ -68,7 +68,7 @@ def get_data_buff():
 
             if response.status_code != 200:
                 print("Site error! Chilling...\n")
-                time.sleep(random.randint(10, 15))
+                time.sleep(random.randint(13, 15))
                 continue
 
             offset += size_list
@@ -96,7 +96,7 @@ def get_data_buff():
                         }
                     )
 
-        time.sleep(random.randint(1, 2))
+        time.sleep(random.randint(1, 3))
         if control < 20:
             break
     with open("resultbuff163.json", "w", encoding='utf-8') as file:
