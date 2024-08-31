@@ -60,7 +60,7 @@ def get_data_buff():
     counter = 0
     while True:
         print("Page: " + str(page) + "\n")
-        for item in range(offset, offset + size_list, 20):
+        for item in range(offset, offset + size_list, size_list):
             response = session.get(
                 url=(f"https://buff.163.com/api/market/goods?game=csgo&page_num={str(page)}&tab=selling&use_suggestion=0&_=1710077203803"),
                 timeout=10
@@ -97,7 +97,7 @@ def get_data_buff():
                     )
 
         time.sleep(random.randint(1, 3))
-        if control < 20:
+        if control < size_list:
             break
     with open("resultbuff163.json", "w", encoding='utf-8') as file:
         json.dump(result, file, indent=4, ensure_ascii=False)
