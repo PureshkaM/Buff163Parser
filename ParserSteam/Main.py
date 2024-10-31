@@ -4,7 +4,6 @@ import os
 import datetime
 import random
 
-from fake_useragent import UserAgent
 import json
 import pandas as pd
 
@@ -13,8 +12,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import pickle
-
-ua = UserAgent()
 
 def get_data_buff():
 
@@ -39,11 +36,12 @@ def get_data_buff():
             element = WebDriverWait(driver, 1000).until(
                 EC.presence_of_element_located((By.ID, 'j_mybuying'))
             )
-        finally:
             with open('cookiesbuff163.pkl', 'wb') as f:
                 pickle.dump(driver.get_cookies(), f)
             driver.quit()
-
+        except:
+            print("Error")
+            return 0
 
     session = requests.Session()
     with open('cookiesbuff163.pkl', 'rb') as f:
@@ -106,6 +104,8 @@ def get_data_buff():
 
 def main():
     buff163 = get_data_buff()
+    if buff163 == 0:
+        return 0
     df1 = pd.DataFrame()
     df1.to_excel('buff163.xlsx', index=False)
 
